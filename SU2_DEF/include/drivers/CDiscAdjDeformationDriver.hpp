@@ -52,12 +52,12 @@ class CDiscAdjDeformationDriver : public CDriverBase {
   /*!
    * \brief Launch the driver computation.
    */
-  void Run();
+  void Run() override;
 
   /*!
    * \brief Deallocation routine.
    */
-  void Finalize();
+  void Finalize() override;
 
  protected:
   /*!
@@ -82,7 +82,7 @@ class CDiscAdjDeformationDriver : public CDriverBase {
    * \param[in] surface_movement - Surface movement class of the problem.
    * \param[in] Gradient_file - Output file to store the gradient data.
    */
-  void SetProjection_FD(CGeometry* geometry, CConfig* config, CSurfaceMovement* surface_movement, su2double** Gradient);
+  void SetProjectionFD(CGeometry* geometry, CConfig* config, CSurfaceMovement* surface_movement, su2double** Gradient);
 
   /*!
    * \brief Projection of the surface sensitivity using algorithmic differentiation (AD).
@@ -91,7 +91,7 @@ class CDiscAdjDeformationDriver : public CDriverBase {
    * \param[in] surface_movement - Surface movement class of the problem.
    * \param[in] Gradient_file - Output file to store the gradient data.
    */
-  void SetProjection_AD(CGeometry* geometry, CConfig* config, CSurfaceMovement* surface_movement, su2double** Gradient);
+  void SetProjectionAD(CGeometry* geometry, CConfig* config, CSurfaceMovement* surface_movement, su2double** Gradient);
 
   /*!
    * \brief Prints the gradient information to a file.
@@ -108,7 +108,7 @@ class CDiscAdjDeformationDriver : public CDriverBase {
    * \param[in] config - Definition of the particular problem.
    * \param[in] val_nZone - Number of Zones.
    */
-  void SetSensitivity_Files(CGeometry**** geometry, CConfig** config, unsigned short val_nZone);
+  void SetSensitivityFiles(CGeometry**** geometry, CConfig** config, unsigned short val_nZone);
 
   /*!
    * \brief Treatment of derivatives with the Sobolev smoothing solver.
@@ -116,7 +116,7 @@ class CDiscAdjDeformationDriver : public CDriverBase {
    * \param[in] config - Definition of the particular problem.
    * \param[in] grid_movement - Volumetric movement class of the problem.
    */
-  void DerivativeTreatment_MeshSensitivity(CGeometry* geometry, CConfig* config, CVolumetricMovement* grid_movement);
+  void DerivativeTreatmentMeshSensitivity(CGeometry* geometry, CConfig* config, CVolumetricMovement* grid_movement);
 
   /*!
    * \brief Treatment of derivatives with the Sobolev smoothing solver.
@@ -126,6 +126,6 @@ class CDiscAdjDeformationDriver : public CDriverBase {
    * \param[in] surface_movement - Surface movement class of the problem.
    * \param[in] Gradient - Output array to store the gradient data.
    */
-  void DerivativeTreatment_Gradient(CGeometry* geometry, CConfig* config, CVolumetricMovement* grid_movement,
-                                    CSurfaceMovement* surface_movement, su2double** Gradient);
+  void DerivativeTreatmentGradient(CGeometry* geometry, CConfig* config, CVolumetricMovement* grid_movement,
+                                   CSurfaceMovement* surface_movement, su2double** Gradient);
 };

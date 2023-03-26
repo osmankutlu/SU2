@@ -56,17 +56,17 @@ class CDeformationDriver : public CDriverBase {
   /*!
    * \brief Launch the driver computation.
    */
-  void Run();
+  void Run() override;
 
   /*!
    * \brief Output the mesh.
    */
-  void Output();
+  void Output() override;
 
   /*!
    * \brief Deallocation routine.
    */
-  void Finalize();
+  void Finalize() override;
 
   /*!
    * \brief Communicate boundary mesh displacements.
@@ -102,10 +102,10 @@ class CDeformationDriver : public CDriverBase {
   /*!
    * \brief Mesh deformation based on linear elasticity solver (CMeshSolver).
    */
-  void Update();
+  void Update() override;
 
   /*!
    * \brief Mesh deformation based on legacy implementation.
    */
-  void Update_Legacy();
+  void Update_Legacy() override;
 };

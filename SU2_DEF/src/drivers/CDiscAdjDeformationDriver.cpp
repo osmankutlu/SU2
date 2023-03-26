@@ -307,8 +307,8 @@ void CDiscAdjDeformationDriver::Run() {
         cout << "\n---------------------- Mesh sensitivity computation ---------------------" << endl;
       if (config_container[iZone]->GetDiscrete_Adjoint() && config_container[iZone]->GetSmoothGradient() &&
           config_container[iZone]->GetSobMode() == ENUM_SOBOLEV_MODUS::MESH_LEVEL) {
-        DerivativeTreatment_MeshSensitivity(geometry_container[iZone][INST_0][MESH_0], config_container[iZone],
-                                            grid_movement[iZone][INST_0]);
+        DerivativeTreatmentMeshSensitivity(geometry_container[iZone][INST_0][MESH_0], config_container[iZone],
+                                           grid_movement[iZone][INST_0]);
       } else {
         grid_movement[iZone][INST_0]->SetVolume_Deformation(geometry_container[iZone][INST_0][MESH_0],
                                                             config_container[iZone], false, true);
@@ -319,7 +319,7 @@ void CDiscAdjDeformationDriver::Run() {
   if (config_container[ZONE_0]->GetDiscrete_Adjoint()) {
     if (rank == MASTER_NODE)
       cout << "\n------------------------ Mesh sensitivity Output ------------------------" << endl;
-    SetSensitivity_Files(geometry_container, config_container, nZone);
+    SetSensitivityFiles(geometry_container, config_container, nZone);
   }
 
   ofstream Gradient_file;
@@ -345,15 +345,15 @@ void CDiscAdjDeformationDriver::Run() {
 
       if (config_container[iZone]->GetAD_Mode()) {
         if (config_container[iZone]->GetSmoothGradient()) {
-          DerivativeTreatment_Gradient(geometry_container[iZone][INST_0][MESH_0], config_container[iZone],
-                                       grid_movement[iZone][INST_0], surface_movement[iZone], Gradient);
+          DerivativeTreatmentGradient(geometry_container[iZone][INST_0][MESH_0], config_container[iZone],
+                                      grid_movement[iZone][INST_0], surface_movement[iZone], Gradient);
         } else {
-          SetProjection_AD(geometry_container[iZone][INST_0][MESH_0], config_container[iZone], surface_movement[iZone],
-                           Gradient);
+          SetProjectionAD(geometry_container[iZone][INST_0][MESH_0], config_container[iZone], surface_movement[iZone],
+                          Gradient);
         }
       } else {
-        SetProjection_FD(geometry_container[iZone][INST_0][MESH_0], config_container[iZone], surface_movement[iZone],
-                         Gradient);
+        SetProjectionFD(geometry_container[iZone][INST_0][MESH_0], config_container[iZone], surface_movement[iZone],
+                        Gradient);
       }
     }
   }
@@ -383,8 +383,8 @@ void CDiscAdjDeformationDriver::Finalize() {
     cout << "\n------------------------- Exit Success (SU2_DOT) ------------------------" << endl << endl;
 }
 
-void CDiscAdjDeformationDriver::SetProjection_FD(CGeometry* geometry, CConfig* config,
-                                                 CSurfaceMovement* surface_movement, su2double** Gradient) {
+void CDiscAdjDeformationDriver::SetProjectionFD(CGeometry* geometry, CConfig* config,
+                                                CSurfaceMovement* surface_movement, su2double** Gradient) {
   unsigned short iDV, nDV, iFFDBox, nDV_Value, iMarker, iDim;
   unsigned long iVertex, iPoint;
   su2double delta_eps, my_Gradient, localGradient, *Normal, dS, *VarCoord, Sensitivity, dalpha[3], deps[3], dalpha_deps;
@@ -648,8 +648,8 @@ void CDiscAdjDeformationDriver::SetProjection_FD(CGeometry* geometry, CConfig* c
   delete[] UpdatePoint;
 }
 
-void CDiscAdjDeformationDriver::SetProjection_AD(CGeometry* geometry, CConfig* config,
-                                                 CSurfaceMovement* surface_movement, su2double** Gradient) {
+void CDiscAdjDeformationDriver::SetProjectionAD(CGeometry* geometry, CConfig* config,
+                                                CSurfaceMovement* surface_movement, su2double** Gradient) {
   su2double *VarCoord = nullptr, Sensitivity, my_Gradient, localGradient, *Normal, Area = 0.0;
   unsigned short iDV_Value = 0, iMarker, nMarker, iDim, nDim, iDV, nDV;
   unsigned long iVertex, nVertex, iPoint;
@@ -798,8 +798,8 @@ void CDiscAdjDeformationDriver::OutputGradient(su2double** Gradient, CConfig* co
   }
 }
 
-void CDiscAdjDeformationDriver::SetSensitivity_Files(CGeometry**** geometry, CConfig** config,
-                                                     unsigned short val_nZone) {
+void CDiscAdjDeformationDriver::SetSensitivityFiles(CGeometry**** geometry, CConfig** config,
+                                                    unsigned short val_nZone) {
   unsigned short iMarker, iDim, nDim, nMarker, nVar;
   unsigned long iVertex, iPoint, nPoint, nVertex;
   su2double *Normal, Prod, Sens = 0.0, SensDim, Area;
@@ -907,8 +907,8 @@ void CDiscAdjDeformationDriver::SetSensitivity_Files(CGeometry**** geometry, CCo
   }
 }
 
-void CDiscAdjDeformationDriver::DerivativeTreatment_MeshSensitivity(CGeometry* geometry, CConfig* config,
-                                                                    CVolumetricMovement* grid_movement) {
+void CDiscAdjDeformationDriver::DerivativeTreatmentMeshSensitivity(CGeometry* geometry, CConfig* config,
+                                                                   CVolumetricMovement* grid_movement) {
   int rank = SU2_MPI::GetRank();
 
   /*--- Warning if chosen smoothing mode is unsupported.
@@ -968,9 +968,9 @@ void CDiscAdjDeformationDriver::DerivativeTreatment_MeshSensitivity(CGeometry* g
   }
 }
 
-void CDiscAdjDeformationDriver::DerivativeTreatment_Gradient(CGeometry* geometry, CConfig* config,
-                                                             CVolumetricMovement* grid_movement,
-                                                             CSurfaceMovement* surface_movement, su2double** Gradient) {
+void CDiscAdjDeformationDriver::DerivativeTreatmentGradient(CGeometry* geometry, CConfig* config,
+                                                            CVolumetricMovement* grid_movement,
+                                                            CSurfaceMovement* surface_movement, su2double** Gradient) {
   int rank = SU2_MPI::GetRank();
 
   /*--- Error if chosen smoothing mode is unsupported.
