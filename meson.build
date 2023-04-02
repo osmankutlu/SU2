@@ -268,6 +268,9 @@ if omp and get_option('enable-autodiff')
   endif
 endif
 
+spdlog_dep = declare_dependency(include_directories: 'externals/spdlog/include')
+su2_deps += spdlog_dep
+
 # compile common library
 subdir('Common/src')
 # compile SU2_CFD executable

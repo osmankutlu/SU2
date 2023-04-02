@@ -48,6 +48,7 @@ def init_submodules(
     own_mpp=True,
     own_cool=True,
     own_mel=True,
+    own_spdlog=True,
 ):
 
     cur_dir = sys.path[0]
@@ -70,6 +71,8 @@ def init_submodules(
     github_repo_coolprop = "https://github.com/CoolProp/CoolProp"
     sha_version_mel = "2484cd3258ef800a10e361016cb341834ee7930b"
     github_repo_mel = "https://github.com/pcarruscag/MEL"
+    sha_version_spdlog = "ad0e89cbfb4d0c1ce4d097e134eb7be67baebb36"
+    github_repo_spdlog = "https://github.com/gabime/spdlog"
 
     medi_name = "MeDiPack"
     codi_name = "CoDiPack"
@@ -79,6 +82,7 @@ def init_submodules(
     mpp_name = "Mutationpp"
     coolprop_name = "CoolProp"
     mel_name = "MEL"
+    spdlog_name = "spdlog"
     base_path = cur_dir + os.path.sep + "externals" + os.path.sep
     alt_name_medi = base_path + "medi"
     alt_name_codi = base_path + "codi"
@@ -86,6 +90,7 @@ def init_submodules(
     alt_name_meson = base_path + "meson"
     alt_name_ninja = base_path + "ninja"
     alt_name_mel = base_path + "mel"
+    alt_name_spdlog = base_path + "spdlog"
     alt_name_mpp = cur_dir + os.path.sep + "subprojects" + os.path.sep + "Mutationpp"
     alt_name_coolprop = cur_dir + os.path.sep + "subprojects" + os.path.sep + "CoolProp"
 
@@ -117,6 +122,8 @@ def init_submodules(
             submodule_status(alt_name_coolprop, sha_version_coolprop)
         if own_mel:
             submodule_status(alt_name_mel, sha_version_mel)
+        if own_spdlog:
+            submodule_status(alt_name_spdlog, sha_version_spdlog)
     # Otherwise download the zip file from git
     else:
         if own_codi:
@@ -149,6 +156,10 @@ def init_submodules(
             )
         if own_mel:
             download_module(mel_name, alt_name_mel, github_repo_mel, sha_version_mel)
+        if own_spdlog:
+            download_module(
+                spdlog_name, alt_name_spdlog, github_repo_spdlog, sha_version_spdlog
+            )
 
 
 def is_git_directory(path="."):
